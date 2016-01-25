@@ -1,1 +1,41 @@
-hi
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.6/angular.min.js"></script>
+	<script type="text/javascript">
+	angular.module('app',[])
+	.directive('rating',function(){
+		return{
+			scope:{
+				rate: '=',
+				onUpdate : '&'
+			},
+			templateUrl :'rating.html',
+			link:function(scope,element,attrs){
+				scope.range = [1,2,3,4,5]
+
+				scope.update = function(value){
+					scope.rate = value;
+					if(scope.onUpdate){
+						scope.onUpdate({value: value});
+					}
+				}
+			}
+		}
+	})
+	.controller('ctrl',function($scope){
+		$scope.myrate = 3;
+		$scope.customRate = $scope.myrate / 5;
+		$scope.onUpdate = function(value){
+			$scope.customRate = value / 5;			
+		}
+	});
+	</script>
+</head>
+<body ng-app="app" ng-controller="ctrl">
+	<rating rate="myrate" on-update="onUpdate(value)"></rating>
+	<pre style="padding:5px">{{customRate}}</pre>
+</body>
+</html>
